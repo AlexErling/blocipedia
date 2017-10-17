@@ -6,6 +6,7 @@
  end
  
  gem 'rails', '~> 5.1.2'
+ gem 'faker', :git => 'git://github.com/stympy/faker.git', :branch => 'master'
  gem 'bootstrap-sass'
  
  group :production do
@@ -34,6 +35,7 @@
  gem 'pundit'
  gem 'devise'
  gem 'bcrypt' 
+
  
  group :development do
    gem 'listen', '~> 3.0.5'
