@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   devise_for :users
   get 'about' => 'welcome#about'
   root 'welcome#index'
+  resources :charges, only: [:new, :create]
+  get 'upgrademembership' => 'charges#new'
+  
+  match "users/:id/downgrade" => "users#downgrade", :as => "downgrade_user", via: [:get, :post]
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

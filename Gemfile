@@ -35,6 +35,8 @@
  gem 'pundit'
  gem 'devise'
  gem 'bcrypt' 
+ gem 'stripe'
+ gem 'figaro', '1.0'
 
  
  group :development do
