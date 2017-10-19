@@ -14,15 +14,16 @@ users = User.all
   wiki = Wiki.create!(
     user: users.sample,
     title: Faker::Superhero.name,
-    body: Faker::Superhero.power
+    body: Faker::Company.bs,
+    private: [true, false].sample
   )
 end
 
 wikis = Wiki.all
 
 admin = User.create!(
-  name: 'Admin User',
-  email: 'admin@example.com',
+  name: 'Alex Erling',
+  email: 'alex.erling@gmail.com',
   password: 'password',
   confirmed_at: Time.now,
   role: 'admin'

@@ -1,19 +1,49 @@
 class WikiPolicy < ApplicationPolicy
 
   def index?
-    true
+    user.admin? || user.wikis.count
   end
-  
-  def create?
-    true
+
+  def update?
+    user.present?
+  end
+
+  def destroy?
+    user.role == 'admin' || wiki.user == user
   end
 
   def new?
-    create?
+    user.present?
+  end
+
+  def create?
+    user.present?
+  end
+
+  def show?
+    user.present? && (!wiki.private || user.admin? || wiki.user_id == user.id)
+  end
+
+  def edit?
+    user.present?
+  end
+
+  class Scope
+  attr_reader :user, :scope
+  
+  def initialize(user, scope)
+    @user = user
+    @scope = scope
   end
   
-  def destroy?
-    true
+    def resolve
+      if user.admin? || user.premium?
+        return scope.all
+      else
+        return scope.where(private: false)
+      end
+      
+    end
   end
 
 end
