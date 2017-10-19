@@ -4,12 +4,12 @@
   </h1>
   <small>
        submitted <%= time_ago_in_words(@wiki.created_at) %> ago
-  </small>
   <% if @wiki.private? %>
     <p> Private Wiki </p>
   <% else %>
     <p> Public Wiki</p>
   <% end %>
+  </small>
 </div>
 
 <div class="row">
@@ -18,7 +18,9 @@
   </div>
   <div class="col-md-4">
     <%= link_to "Edit", edit_wiki_path(@wiki), class: 'btn btn-success' %>
-      <%= link_to "Delete Wiki", @wiki, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to delete this wiki?'} %>
+    <% if current_user.admin? || (current_user.premium? && current_user.id == @wiki.user_id) %> 
+    <%= link_to "Delete Wiki", @wiki, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure you want to delete this wiki?'} %>
+    <% end %>
    </div>
 
 </div>
