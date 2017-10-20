@@ -1,38 +1,24 @@
-<h1>All Wikis</h1>
+<h1 style="margin-left:10px">Wikis</h1>
 
-<div class="col-md-16">
-<% if current_user %>
-<%= link_to "New Wiki", new_wiki_path, class: 'btn btn-primary' %>
-<% end %>
-</div>
-
-<div class="col-md-16">
-  <h3> Public Wikis</h3>
-  <% @wikis.each do |wiki| %>
-  <div class="media">
-      <div class="media-body">
-        <h4 class="media-heading">
-              
-                <% if wiki.private? == false %>
-                    <%= link_to wiki.title, wiki %>
-                    <small>By <%= wiki.user.name %> | <%= time_ago_in_words(wiki.created_at) %> ago</small>
-                <% end %>
-              <% end %>
-            </h4>
-      </div>
-  </div>
-    <h3> Private Wikis</h3>
+<div class="row">
+  <div class="col-md-8", style="margin-left:10px"> 
+      <% if current_user %>
+    <%= link_to "New Wiki", new_wiki_path, class: 'btn btn-primary' %>
+  <% end %>
     <% @wikis.each do |wiki| %>
     <div class="media">
       <div class="media-body">
-        <h4 class="media-heading">
-                    <% if wiki.private? %>
-                        <%= link_to wiki.title, wiki, class: "private" %> <small>[private]</small>
-                        <small>By <%= wiki.user.name %> | <%= time_ago_in_words(wiki.created_at) %> ago</small>
-                    <% end %>
-               <% end %>
-          </h4>
+        <h3 class="media-heading">
+          <% if wiki.private? %>
+            <%= link_to wiki.title, wiki, class: "private" %> <small>[private]</small>
+          <% else %>
+            <%= link_to wiki.title, wiki %>
+          <% end %>
+        </h3>
+        <small>By <%= wiki.user.name %> | <%= time_ago_in_words(wiki.created_at) %> ago</small>
       </div>
+    </div>
+    <% end %>
   </div>
-</div>
 
+</div>

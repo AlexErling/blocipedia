@@ -1,7 +1,7 @@
 class WikiPolicy < ApplicationPolicy
 
   def index?
-    user.admin? || user.wikis.count
+    user.present?
   end
 
   def update?
@@ -21,11 +21,11 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def show?
-    user.present? && (!wiki.private || user.admin? || wiki.user_id == user.id)
+    user.present? && (!wiki.private || user.admin? || wiki.user_id == user.id || user.collaborator?(wiki))
   end
 
   def edit?
-    user.present?
+    user.present? && ( user.admin? || wiki.user_id == user.id || user.collaborator?(wiki))
   end
 
   class Scope
@@ -37,12 +37,13 @@ class WikiPolicy < ApplicationPolicy
   end
   
     def resolve
-      if user.admin? || user.premium?
-        return scope.all
+      if @user.admin? || @user.premium?
+        return @scope.all
+      elsif @user.standard?
+        return @scope.joins(:collaborators).where(collaborators: {user_id: @user.id}) + @scope.where(private: false)
       else
-        return scope.where(private: false)
+        return @scope.none
       end
-      
     end
   end
 
